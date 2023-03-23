@@ -1,0 +1,90 @@
+package javaapplication151;
+
+import java.util.Scanner;
+
+public class CaesarCipher {
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter your words: ");
+        String test = input.nextLine();
+        
+        System.out.print("number to shift: ");
+        int shift = input.nextInt();
+        
+        String cipher = cipher(test, shift);
+        System.out.println("Encrypted words: " + cipher);
+        
+        String decipher = decipher(cipher, shift);
+        System.out.println("Decrypted words: " + decipher);
+    }
+    
+    public static String cipher(String plainText, int shiftValue){
+        if(shiftValue > 26){
+            shiftValue = shiftValue % 26;
+        }else if(shiftValue < 0){
+            shiftValue = (shiftValue % 26) + 26;
+        }
+        
+        String cipherText = "";
+        int length = plainText.length();
+        for(int i = 0; i < length; i++){
+            char ch = plainText.charAt(i);
+            if(Character.isLetter(ch)){
+                if(Character.isLowerCase(ch)){
+                    char c = (char)(ch + shiftValue);
+                    if(c>'z'){
+                        cipherText += (char)(ch - (26-shiftValue));
+                    }else{
+                        cipherText += c;
+                    }
+                }else if(Character.isUpperCase(ch)){
+                    char c = (char)(ch + shiftValue);
+                    if(c > 'Z'){
+                        cipherText += (char)(ch - (26-shiftValue));
+                    }else{
+                        cipherText += c;
+                    }
+                }
+            }else{
+                cipherText += ch;
+            }
+        }return cipherText;
+    }
+    
+    public static String decipher(String encryptedText, int shiftValue){
+        shiftValue = shiftValue%26;
+
+        String plainText = "";
+        int length = encryptedText.length();
+        for(int i = 0; i < length; i++){
+            char ch = encryptedText.charAt(i);
+            if(Character.isLetter(ch)){
+                if(Character.isLowerCase(ch)){
+                    char ShiftedCharacter = (char)(ch - shiftValue);                 
+
+                    if(ShiftedCharacter<'a'){
+                        plainText += (char)(ch + (26-shiftValue));
+                    }else{
+                        plainText += ShiftedCharacter;
+                    }
+
+                }
+                else if(Character.isUpperCase(ch)){
+                    //char ShiftedCharacter = (char)(ch + shiftValue);
+                    char c = (char)(ch - shiftValue);
+                    if(c< 'A'){
+                        plainText += (char)(ch - (26-shiftValue));
+                    }else{
+                        plainText += c;
+                    }
+                }
+            }
+            else{
+                plainText += ch;
+            }
+        }
+        return plainText;
+    }
+    
+}
